@@ -1,5 +1,6 @@
-# DSC202_final_projectl
+# DSC202_final_project
 
+### Title: Social Determinants of Health (SDOH), Survey Data, and Network Analysis
 Group Members: Teresa Lee, Tino Trangia, Micah Hunter
 
 ## Neo4j Sandbox setup
