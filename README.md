@@ -4,7 +4,7 @@
 Group Members: Teresa Lee, Tino Trangia, Micah Hunter
 
 ### Video Presentation about our project:
-<insert link here>
+https://drive.google.com/file/d/15b9CFIhlCw2wgkapxL_2Qp4AD6Ne-dhQ/view?usp=sharing
 
 ## Neo4j Sandbox setup
 [Neo4j Sandbox](https://neo4j.com/sandbox/) is a cloud-based, short-term instance of Neo4j database that is good for quick projects and exploring graph DB without local setup. 
