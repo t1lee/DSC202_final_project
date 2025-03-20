@@ -1,0 +1,28 @@
+create table "Patients"
+(
+    	Id text,
+	BIRTHDATE text,
+	DEATHDATE text,
+	SSN text,
+	DRIVERS text,
+	PASSPORT text,
+	PREFIX text,
+	FIRST text,
+	LAST text,
+	SUFFIX text,
+	MAIDEN text,
+	MARITAL text,
+	RACE text,
+	ETHNICITY text,
+	GENDER text,
+	BIRTHPLACE text,
+	ADDRESS text,
+	CITY text,
+	STATE text,
+	COUNTY text,
+	ZIP text,
+	LAT text,
+	LON text,
+	HEALTHCARE_EXPENSES text,
+	HEALTHCARE_COVERAGE text
+);

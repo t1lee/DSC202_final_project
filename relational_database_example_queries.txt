@@ -1,0 +1,56 @@
+-- -- -- demo example 1
+select description, count(*) as counts
+from "Conditions"
+group by description
+having description like '%(disorder)%'
+order by counts desc
+limit 10;
+
+
+-- demo example 2
+create table conditionCounts as (
+    select description, count(*) as counts
+    from "Conditions"
+    group by description
+    having description like '%(disorder)%'
+    order by counts desc
+    limit 10
+    )
+
+create table countsGender as (
+    select c.description, p.gender, count(*) as gender_count
+    from "Conditions" c
+    left join "Patients" p on c.patient = p.id
+    where c.description in (select conditioncounts.description
+                            from conditionCounts)
+    group by c.description, p.gender
+    )
+
+select cc.description,
+    COALESCE(SUM(CASE WHEN cg.gender = 'M' THEN cg.gender_count END), 0) AS males,
+    COALESCE(SUM(CASE WHEN cg.gender = 'F' THEN cg.gender_count END), 0) AS females
+from conditioncounts cc
+left join countsGender cg on cc.description=cg.description
+group by cc.description
+ORDER BY cc.description desc
+
+
+-- demo example 3
+with combinedTable as (
+    select p.id,
+           p.zip,
+           co.description,
+           ci.acs_pct_foreign_born_zc as percentage_foreign_born
+    from "Patients" p
+    join "Citizenship" ci on p.zip=ci.new_zipcode
+    join "Conditions" co on p.id=co.patient
+)
+
+select zip, percentage_foreign_born, count(*) as counts
+from combinedTable c
+group by zip, percentage_foreign_born
+order by counts desc
+
+
+
+

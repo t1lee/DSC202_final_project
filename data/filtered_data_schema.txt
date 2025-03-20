@@ -1,0 +1,8 @@
+create table "Citizenship"
+(
+    	ZIPCODE text,
+	STATE text,
+	REGION text,
+	ACS_PCT_CTZ_US_BORN_ZC text,
+	ACS_PCT_FOREIGN_BORN_ZC
+);
