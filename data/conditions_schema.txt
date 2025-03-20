@@ -1,0 +1,9 @@
+create table "Conditions"
+(
+    	START text,
+	STOP text,
+	PATIENT text,
+	ENCOUNTER text,
+	CODE text,
+	DESCRIPTION text
+);
