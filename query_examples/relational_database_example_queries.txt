@@ -1,4 +1,4 @@
--- -- -- demo example 1
+-- -- -- Query example 1: What’s the top 10 most common medical condition disorder in our data?
 select description, count(*) as counts
 from "Conditions"
 group by description
@@ -7,7 +7,7 @@ order by counts desc
 limit 10;
 
 
--- demo example 2
+-- Query example 2: For the top 10 most common medical condition disorder, find the break down of the condition between genders
 create table conditionCounts as (
     select description, count(*) as counts
     from "Conditions"
@@ -35,7 +35,7 @@ group by cc.description
 ORDER BY cc.description desc
 
 
--- demo example 3
+-- Query example 3: Combining the synthetic data with real demographic data on zip code, find if there is a correlation between percentage of foreign born citizens in a zip code location to the number of medical conditions in that location.
 with combinedTable as (
     select p.id,
            p.zip,
