@@ -48,3 +48,7 @@ WHERE riskFactors >= 2
 RETURN p, riskFactors
 ORDER BY riskFactors DESC
 
+
+--Relational + Graph Section - Finds unique medications based on race
+MATCH (p:Patient)-[:HAS_MEDICATION]->(m:Medication)
+RETURN p.race AS race, COLLECT(DISTINCT m) AS unique_medications
