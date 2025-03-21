@@ -1,0 +1,50 @@
+-- Query 1: Find medical records (neighborhood) for a certain patient
+MATCH path = (p:Patient {Id: "30a6452c-4297-a1ac-977a-6a23237c7b46"})-[*1..3]-(n)
+RETURN path
+
+
+-- Query 2: Find patient-provider networks
+MATCH (pt:Patient)-[r:HAS_ENCOUNTER]->(e:Encounter)-[:PROVIDED_BY]->(p:Provider)
+WITH pt, p, e
+WITH pt, p, collect(e)[0..3] AS limitedEncounters
+UNWIND limitedEncounters AS e
+MATCH path = (pt)-[r:HAS_ENCOUNTER]->(e)-[:PROVIDED_BY]->(p)
+RETURN pt, p, collect(path) AS paths
+
+
+-- Query 3: Find prediabetic patients prescribed with insulin and their recent encounters
+MATCH (p:Patient)-[:HAS_CONDITION]->(c:Condition {CODE: '714628002'}),
+      (p)-[:HAS_MEDICATION]->(m:Medication {CODE: '106892'}),
+      (p)-[:HAS_ENCOUNTER]->(e:Encounter),
+      (e)-[:PROVIDED_BY]->(pr:Provider {SPECIALITY: 'GENERAL PRACTICE'})
+RETURN DISTINCT p.FIRST AS PatientFirstName, 
+       p.LAST AS PatientLastName, 
+       pr.NAME AS ProviderName, 
+       e.START AS EncounterStartDate
+ORDER BY PatientLastName ASC, e.START DESC;
+
+
+-- Query 4: Find providers or prediabetic patients and their total claim cost
+MATCH (p:Patient)-[:HAS_CONDITION]->(c:Condition {CODE: '714628002'}) 
+WITH p, count(DISTINCT c) as conditionCount
+WHERE conditionCount >= 1
+MATCH (p)-[:HAS_ENCOUNTER]->(e:Encounter)-[:PROVIDED_BY]->(pr:Provider)
+WITH p, collect(DISTINCT pr) as providers, sum(toFloat(e.TOTAL_CLAIM_COST)) as totalCost
+RETURN p.FIRST AS PatientFirstName, 
+       p.LAST AS PatientLastName, 
+       providers, 
+       totalCost
+ORDER BY totalCost DESC;
+
+
+-- Query 5: Find patients with risk factors for heart disease
+MATCH (p:Patient)-[:HAS_OBSERVATION]->(o:Observation)
+WHERE o.DESCRIPTION CONTAINS "Hypertension"
+   OR o.DESCRIPTION CONTAINS "High Cholesterol"
+   OR o.DESCRIPTION CONTAINS "Obesity"
+   OR o.DESCRIPTION CONTAINS "Diabetes"
+WITH p, COUNT(o) AS riskFactors
+WHERE riskFactors >= 2
+RETURN p, riskFactors
+ORDER BY riskFactors DESC
+
