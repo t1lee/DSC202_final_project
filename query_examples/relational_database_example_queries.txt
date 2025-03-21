@@ -52,5 +52,9 @@ group by zip, percentage_foreign_born
 order by counts desc
 
 
-
-
+-- Relational + Graph Section - Finds the ZIP codes with the highest healthcare expenses, along with the associated races
+SELECT zip, race, AVG(healthcare_expenses) AS avg_expenses
+FROM patients
+GROUP BY zip, race
+ORDER BY avg_expenses DESC
+LIMIT 100;
